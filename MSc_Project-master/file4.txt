@@ -1,0 +1,25 @@
+ typedef enum int unsigned{IDLE,I1, I2, I3, I4 } state_t;
+ 
+state_t state, next;
+always_comb begin 
+	next = state;
+	ready = 0;
+	first_iteration = '0;
+	case (state)
+		IDLE: begin
+			if(start) begin
+				next = I1;
+				ready = 1;
+				end
+			else
+				next = IDLE;
+		end
+		I1: begin
+				next = I2;
+				first_iteration = '1;
+		end
+I2: next = I3;
+I3: next = I4;
+I4: next = IDLE;
+	endcase
+end

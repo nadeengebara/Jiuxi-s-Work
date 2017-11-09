@@ -1,0 +1,70 @@
+ typedef enum int unsigned{IDLE,I1, I2, I3, I4, I5, I6, I7, I8 } state_t;
+ 
+state_t state, next;
+always_comb begin 
+	next = state;
+	decision_ready = 0;
+	first_iteration = '0;
+	init = 0;
+	case (state)
+		IDLE: begin
+			if(start) begin
+				next = I1;
+				decision_ready = 1;
+				init = 1;
+				end
+			else
+				next = IDLE;
+		end
+		I1: begin
+			if(delayed_ready1[1]) 
+				next = I2;
+			else begin
+				next = I1;
+				first_iteration ='1;
+			end
+		end
+I2: begin
+			if(delayed_ready1[1])
+				next = I3;
+			else
+				next = I2;
+			end
+I3: begin
+			if(delayed_ready1[1])
+				next = I4;
+			else
+				next = I3;
+			end
+I4: begin
+			if(delayed_ready1[1])
+				next = I5;
+			else
+				next = I4;
+			end
+I5: begin
+			if(delayed_ready1[1])
+				next = I6;
+			else
+				next = I5;
+			end
+I6: begin
+			if(delayed_ready1[1])
+				next = I7;
+			else
+				next = I6;
+			end
+I7: begin
+			if(delayed_ready1[1])
+				next = I8;
+			else
+				next = I7;
+			end
+I8: begin 
+			if(acc_ready[1])
+				next = IDLE;
+			else
+				next = I8;
+			end
+	endcase
+end
